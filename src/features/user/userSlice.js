@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      const response = await api.post("/user", { email, name, password });
+      const response = await api.post("/users", { email, name, password });
       // 성공
       // 1. 성공 토스트 메세지 보여주기
       dispatch(
