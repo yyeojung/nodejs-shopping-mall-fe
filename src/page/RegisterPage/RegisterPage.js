@@ -113,6 +113,9 @@ const RegisterPage = () => {
             isInvalid={policyError}
             checked={formData.policy}
           />
+          {policyError && (
+            <p className="invalid-feedback d-block">이용약관에 동의해주세요.</p>
+          )}
         </Form.Group>
         <Button variant="danger" type="submit">
           회원가입
