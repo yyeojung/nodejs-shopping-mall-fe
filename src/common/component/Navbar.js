@@ -38,6 +38,7 @@ const Navbar = ({ user }) => {
     }
   };
   const handleLogout = () => {
+    sessionStorage.removeItem("token");
     dispatch(logout());
   };
   return (
