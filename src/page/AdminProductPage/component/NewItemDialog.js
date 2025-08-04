@@ -9,6 +9,7 @@ import {
   createProduct,
   editProduct,
 } from "../../../features/product/productSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const InitialFormData = {
   name: "",
@@ -59,11 +60,13 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleClose = () => {
     //모든걸 초기화시키고;
     // 다이얼로그 닫아주기
+    setShowDialog(false);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     //재고를 입력했는지 확인, 아니면 에러
+    if (stock.length === 0) return setStockError(true);
     // 재고를 배열에서 객체로 바꿔주기
     // [['M',2]] 에서 {M:2}로
     if (mode === "new") {
@@ -75,25 +78,47 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const handleChange = (event) => {
     //form에 데이터 넣어주기
+    const { id, value } = event.target;
+    setFormData({ ...formData, [id]: value });
   };
 
   const addStock = () => {
     //재고타입 추가시 배열에 새 배열 추가
+    if (stock.length < SIZE.length) {
+      console.log(formData);
+      setStock([
+        ...stock,
+        {
+          id: uuidv4(),
+          size: "",
+          quantity: 0,
+        },
+      ]);
+    }
   };
 
-  const deleteStock = (idx) => {
+  const deleteStock = (id) => {
     //재고 삭제하기
+    const newStock = stock.filter((item) => item.id !== id);
+    setStock(newStock);
   };
 
   const handleSizeChange = (value, index) => {
     //  재고 사이즈 변환하기
+    const newStock = [...stock];
+    newStock[index].size = value;
+    setStock(newStock);
   };
 
   const handleStockChange = (value, index) => {
     //재고 수량 변환하기
+    const newStock = [...stock];
+    newStock[index].quantity = value;
+    setStock(newStock);
   };
 
   const onHandleCategory = (event) => {
+    // 카테고리가 이미 추가되어 있으면 제거
     if (formData.category.includes(event.target.value)) {
       const newCategory = formData.category.filter(
         (item) => item !== event.target.value
@@ -103,6 +128,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         category: [...newCategory],
       });
     } else {
+      //아니면 새로 추가
       setFormData({
         ...formData,
         category: [...formData.category, event.target.value],
@@ -112,6 +138,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const uploadImage = (url) => {
     //이미지 업로드
+    setFormData({ ...formData, image: url });
   };
 
   return (
@@ -176,28 +203,28 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </Button>
           <div className="mt-2">
             {stock.map((item, index) => (
-              <Row key={index}>
+              <Row key={item.id}>
                 <Col sm={4}>
                   <Form.Select
                     onChange={(event) =>
                       handleSizeChange(event.target.value, index)
                     }
                     required
-                    defaultValue={item[0] ? item[0].toLowerCase() : ""}
+                    defaultValue={item.size ? item.size.toLowerCase() : ""}
                   >
                     <option value="" disabled selected hidden>
                       Please Choose...
                     </option>
-                    {SIZE.map((item, index) => (
+                    {SIZE.map((size, index) => (
                       <option
                         inValid={true}
-                        value={item.toLowerCase()}
+                        value={size.toLowerCase()}
                         disabled={stock.some(
-                          (size) => size[0] === item.toLowerCase()
+                          (item) => item.size === size.toLowerCase()
                         )}
-                        key={index}
+                        key={size}
                       >
-                        {item}
+                        {size}
                       </option>
                     ))}
                   </Form.Select>
@@ -209,7 +236,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     }
                     type="number"
                     placeholder="number of stock"
-                    value={item[1]}
+                    value={item.quantity}
                     required
                   />
                 </Col>
@@ -217,7 +244,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                   <Button
                     variant="danger"
                     size="sm"
-                    onClick={() => deleteStock(index)}
+                    onClick={() => deleteStock(item.id)}
                   >
                     -
                   </Button>
@@ -236,7 +263,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
             src={formData.image}
             className="upload-image mt-2"
             alt="uploadedimage"
-          ></img>
+          />
+          {/* {formData.image ? (
+          ) : (
+            <div>이미지 없음</div>
+          )} */}
         </Form.Group>
 
         <Row className="mb-3">
