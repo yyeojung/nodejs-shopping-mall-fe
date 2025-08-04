@@ -5,7 +5,14 @@ import { showToastMessage } from "../common/uiSlice";
 // 비동기 액션 생성
 export const getProductList = createAsyncThunk(
   "products/getProductList",
-  async (query, { rejectWithValue }) => {}
+  async (query, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/product");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 );
 
 export const getProductDetail = createAsyncThunk(
