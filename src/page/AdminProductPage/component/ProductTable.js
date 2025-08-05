@@ -18,22 +18,23 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
           {data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index}>
-                <th>{index}</th>
-                <th>{item.sku}</th>
+                <td>{index}</td>
+                <td>{item.sku}</td>
                 <th style={{ minWidth: "100px" }}>{item.name}</th>
-                <th>{currencyFormat(item.price)}</th>
-                <th>
-                  {Object.keys(item.stock).map((size, index) => (
-                    <div key={index}>
-                      {size}:{item.stock[size]}
-                    </div>
-                  ))}
-                </th>
-                <th>
+                <td>{currencyFormat(item.price)}</td>
+                <td>
+                  {item.stock.length > 0 &&
+                    item.stock.map((stock) => (
+                      <div key={stock.size}>
+                        {stock.size}: {stock.quantity}개
+                      </div>
+                    ))}
+                </td>
+                <td>
                   <img src={item.image} width={100} alt="image" />
-                </th>
-                <th>{item.status}</th>
-                <th style={{ minWidth: "100px" }}>
+                </td>
+                <td>{item.status}</td>
+                <td style={{ minWidth: "100px" }}>
                   <Button
                     size="sm"
                     variant="danger"
@@ -45,7 +46,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                   <Button size="sm" onClick={() => openEditForm(item)}>
                     Edit
                   </Button>
-                </th>
+                </td>
               </tr>
             ))
           ) : (
