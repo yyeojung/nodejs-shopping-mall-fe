@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 const InitialFormData = {
   name: "",
   sku: "",
-  stock: {},
+  stock: [],
   image: "",
   description: "",
   category: [],
@@ -34,8 +34,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [stockError, setStockError] = useState(false);
 
   useEffect(() => {
-    if (success) setShowDialog(false);
-  }, [success]);
+    if (success) {
+      setShowDialog(false);
+    }
+  }, [success, setShowDialog]);
 
   useEffect(() => {
     if (error || !success) {
@@ -45,11 +47,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       if (mode === "edit") {
         setFormData(selectedProduct);
         // 객체형태로 온 stock을  다시 배열로 세팅해주기
-        const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
-          size,
-          selectedProduct.stock[size],
-        ]);
-        setStock(sizeArray);
+        // const sizeArray = Object.keys(selectedProduct.stock).map((size) => [
+        //   size,
+        //   selectedProduct.stock[size],
+        // ]);
+        // setStock(sizeArray);
       } else {
         setFormData({ ...InitialFormData });
         setStock([]);
@@ -67,10 +69,17 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     event.preventDefault();
     //재고를 입력했는지 확인, 아니면 에러
     if (stock.length === 0) return setStockError(true);
+
     // 재고를 배열에서 객체로 바꿔주기
     // [['M',2]] 에서 {M:2}로
     if (mode === "new") {
       //새 상품 만들기
+      dispatch(
+        createProduct({
+          ...formData,
+          stock,
+        })
+      );
     } else {
       // 상품 수정하기
     }
@@ -85,7 +94,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const addStock = () => {
     //재고타입 추가시 배열에 새 배열 추가
     if (stock.length < SIZE.length) {
-      console.log(formData);
       setStock([
         ...stock,
         {
@@ -140,6 +148,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     //이미지 업로드
     setFormData({ ...formData, image: url });
   };
+  console.log(error);
 
   return (
     <Modal show={showDialog} onHide={handleClose}>
