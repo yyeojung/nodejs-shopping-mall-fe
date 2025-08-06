@@ -148,7 +148,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     //이미지 업로드
     setFormData({ ...formData, image: url });
   };
-  console.log(error);
 
   return (
     <Modal show={showDialog} onHide={handleClose}>
