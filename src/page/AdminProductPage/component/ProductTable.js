@@ -15,7 +15,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index}>
                 <td>{index}</td>
@@ -50,7 +50,9 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
               </tr>
             ))
           ) : (
-            <tr>No Data to show</tr>
+            <tr>
+              <td colSpan={8}>No Data to show</td>
+            </tr>
           )}
         </tbody>
       </Table>
