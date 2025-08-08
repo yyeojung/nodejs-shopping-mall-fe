@@ -11,7 +11,7 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { productList, totalPageNum, isLoading } = useSelector(
+  const { productList, totalPageNum, loading } = useSelector(
     (state) => state.product
   );
   const [query] = useSearchParams();
@@ -42,7 +42,7 @@ const LandingPage = () => {
     navigate(`?${query}`);
   }, [searchQuery, navigate]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="loading-container">
         <DotLoader color="#C81E2B" />
