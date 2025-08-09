@@ -42,6 +42,7 @@ const ProductDetail = () => {
         colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
       />
     );
+  console.log(size);
   return (
     <Container className="product-detail-card">
       <Row>
@@ -71,15 +72,19 @@ const ProductDetail = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="size-drop-down">
-              {Object.keys(selectedProduct.stock).length > 0 &&
-                Object.keys(selectedProduct.stock).map((item, index) =>
-                  selectedProduct.stock[item] > 0 ? (
-                    <Dropdown.Item eventKey={item} key={index}>
-                      {item.toUpperCase()}
+              {selectedProduct.stock.length > 0 &&
+                selectedProduct.stock.map((item) =>
+                  item.quantity > 0 ? (
+                    <Dropdown.Item eventKey={item.id} key={item.id}>
+                      {item.size.toUpperCase()}
                     </Dropdown.Item>
                   ) : (
-                    <Dropdown.Item eventKey={item} disabled={true} key={index}>
-                      {item.toUpperCase()}
+                    <Dropdown.Item
+                      eventKey={item.id}
+                      disabled={true}
+                      key={item.id}
+                    >
+                      {item.size.toUpperCase()}
                     </Dropdown.Item>
                   )
                 )}
