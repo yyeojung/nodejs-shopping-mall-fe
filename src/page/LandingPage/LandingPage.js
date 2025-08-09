@@ -4,8 +4,8 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
-import { DotLoader } from "react-spinners";
 import ReactPaginate from "react-paginate";
+import { ColorRing } from "react-loader-spinner";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,15 @@ const LandingPage = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        <DotLoader color="#C81E2B" />
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+        />
       </div>
     );
   }
