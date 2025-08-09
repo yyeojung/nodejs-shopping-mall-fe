@@ -216,7 +216,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
             Add +
           </Button>
           <div className="mt-2">
-            {stock.map((item, index) => (
+            {formData.stock.map((item, index) => (
               <Row key={item.id}>
                 <Col sm={4}>
                   <Form.Select
