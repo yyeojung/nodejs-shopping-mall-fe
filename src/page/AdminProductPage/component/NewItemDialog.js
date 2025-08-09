@@ -59,11 +59,14 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     }
   }, [showDialog]);
 
+  useEffect(() => {
+    if (stock.length !== 0) return setStockError(false);
+  }, [stock]);
+
   const handleClose = () => {
     //모든걸 초기화시키고;
     // 다이얼로그 닫아주기
     setShowDialog(false);
-    setStockError(false);
   };
 
   const handleSubmit = (event) => {
