@@ -24,7 +24,6 @@ export const addToCart = createAsyncThunk(
           status: "success",
         })
       );
-      console.log(response);
       return response.data.cartItemQty;
     } catch (error) {
       dispatch(
