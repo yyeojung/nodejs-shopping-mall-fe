@@ -29,7 +29,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [formData, setFormData] = useState(
     mode === "new" ? { ...InitialFormData } : selectedProduct
   );
-  const [stock, setStock] = useState([]);
+  // const [stock, setStock] = useState([]);
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
 
@@ -54,14 +54,14 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         // setStock(sizeArray);
       } else {
         setFormData({ ...InitialFormData });
-        setStock([]);
+        // setStock([]);
       }
     }
   }, [showDialog]);
 
   useEffect(() => {
-    if (stock.length !== 0) return setStockError(false);
-  }, [stock]);
+    if (formData.stock.length !== 0) return setStockError(false);
+  }, [formData]);
 
   const handleClose = () => {
     //모든걸 초기화시키고;
@@ -72,7 +72,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     //재고를 입력했는지 확인, 아니면 에러
-    if (stock.length === 0) return setStockError(true);
+    if (formData.stock.length === 0) return setStockError(true);
 
     // 재고를 배열에서 객체로 바꿔주기
     // [['M',2]] 에서 {M:2}로
@@ -81,13 +81,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       dispatch(
         createProduct({
           ...formData,
-          stock,
+          // stock,
         })
       );
     } else {
       // 상품 수정하기
-      console.log(success);
-      dispatch(editProduct({ ...formData, stock, id: selectedProduct._id }));
+      dispatch(editProduct({ ...formData, /*stock*/ id: selectedProduct._id }));
     }
   };
 
@@ -99,36 +98,55 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const addStock = () => {
     //재고타입 추가시 배열에 새 배열 추가
-    if (stock.length < SIZE.length) {
-      setStock([
-        ...stock,
-        {
-          id: uuidv4(),
-          size: "",
-          quantity: 0,
-        },
-      ]);
+    if (formData.stock.length < SIZE.length) {
+      setFormData({
+        ...formData,
+        stock: [
+          ...formData.stock,
+          {
+            id: uuidv4(),
+            size: "",
+            quantity: 0,
+          },
+        ],
+      });
+      // setStock([
+      //   ...stock,
+      //   {
+      //     id: uuidv4(),
+      //     size: "",
+      //     quantity: 0,
+      //   },
+      // ]);
     }
   };
 
   const deleteStock = (id) => {
     //재고 삭제하기
-    const newStock = stock.filter((item) => item.id !== id);
-    setStock(newStock);
+    const newStock = formData.stock.filter((item) => item.id !== id);
+    setFormData({
+      ...formData,
+      stock: newStock,
+    });
+    // setStock(newStock);
   };
 
   const handleSizeChange = (value, index) => {
     //  재고 사이즈 변환하기
-    const newStock = [...stock];
-    newStock[index].size = value;
-    setStock(newStock);
+    const newStock = [...formData.stock];
+    newStock[index] = { ...newStock[index], size: value };
+    // setStock(newStock);
+
+    setFormData({ ...formData, stock: newStock });
+    console.log(formData);
   };
 
   const handleStockChange = (value, index) => {
     //재고 수량 변환하기
-    const newStock = [...stock];
-    newStock[index].quantity = value;
-    setStock(newStock);
+    const newStock = [...formData.stock];
+    newStock[index] = { ...newStock[index], quantity: value };
+    // setStock(newStock);
+    setFormData({ ...formData, stock: newStock });
   };
 
   const onHandleCategory = (event) => {
@@ -233,7 +251,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                       <option
                         inValid={true}
                         value={size.toLowerCase()}
-                        disabled={stock.some(
+                        disabled={formData.stock.some(
                           (item) => item.size === size.toLowerCase()
                         )}
                         key={size}
