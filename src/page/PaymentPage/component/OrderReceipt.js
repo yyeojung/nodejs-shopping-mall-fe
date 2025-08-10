@@ -25,7 +25,7 @@ const OrderReceipt = () => {
           <strong>Total:</strong>
         </div>
         <div>
-          <strong>₩ 최종가격</strong>
+          <strong>₩ {totalPrice.toLocaleString()}</strong>
         </div>
       </div>
       {/* {location.pathname.includes("/cart") && cartList.length > 0 && (

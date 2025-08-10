@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../../../utils/number";
 
 const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
+  console.log(data);
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -21,12 +22,12 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                 <td>{index}</td>
                 <td>{item.sku}</td>
                 <th style={{ minWidth: "100px" }}>{item.name}</th>
-                <td>{currencyFormat(item.price)}</td>
+                <td>{item.price.toLocaleString()}</td>
                 <td>
                   {item.stock.length > 0 &&
                     item.stock.map((stock) => (
                       <div key={stock.size}>
-                        {stock.size}: {stock.quantity}개
+                        {stock.size}: {stock.quantity.toLocaleString()}개
                       </div>
                     ))}
                 </td>

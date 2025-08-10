@@ -23,9 +23,10 @@ const OrderStatusCard = ({ orderItem }) => {
 
           <div>
             {orderItem.items[0].productId.name}
-            {orderItem.items.length > 1 && `외 ${orderItem.items.length - 1}개`}
+            {orderItem.items.length > 1 &&
+              `외 ${(orderItem.items.length - 1).toLocaleString()}개`}
           </div>
-          <div>₩ {currencyFormat(orderItem.totalPrice)}</div>
+          <div>₩ {orderItem.totalPrice.toLocaleString()}</div>
         </Col>
         <Col md={2} className="vertical-middle">
           <div className="text-align-center text-12">주문상태</div>

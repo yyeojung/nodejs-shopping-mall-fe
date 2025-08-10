@@ -1,10 +1,9 @@
-import React from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-import { currencyFormat } from "../../../utils/number";
 import { updateQty, deleteCartItem } from "../../../features/cart/cartSlice";
+
 const CartProductCard = ({ item }) => {
   const dispatch = useDispatch();
 
@@ -35,10 +34,12 @@ const CartProductCard = ({ item }) => {
           </div>
 
           <div>
-            <strong>₩ {currencyFormat(item.productId.price)}</strong>
+            <strong>₩ {item.productId.price.toLocaleString()}</strong>
           </div>
           <div>Size: {item.size}</div>
-          <div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
+          <div>
+            Total: ₩ {(item.productId.price * item.qty).toLocaleString()}
+          </div>
           <div>
             Quantity:
             <Form.Select

@@ -25,7 +25,8 @@ const OrderTable = ({ header, data, openEditForm }) => {
                 {item.items.length > 0 ? (
                   <th>
                     {item.items[0].productId.name}
-                    {item.items.length > 1 && `외 ${item.items.length - 1}개`}
+                    {item.items.length > 1 &&
+                      `외 ${(item.items.length - 1).toLocaleString()}개`}
                   </th>
                 ) : (
                   <th></th>
@@ -33,7 +34,7 @@ const OrderTable = ({ header, data, openEditForm }) => {
 
                 <th>{item.shipTo.address + " " + item.shipTo.city}</th>
 
-                <th>{currencyFormat(item.totalPrice)}</th>
+                <th>{item.totalPrice.toLocaleString()}</th>
                 <th>
                   <Badge bg={badgeBg[item.status]}>{item.status}</Badge>
                 </th>
