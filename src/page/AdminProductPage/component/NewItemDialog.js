@@ -138,13 +138,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     // setStock(newStock);
 
     setFormData({ ...formData, stock: newStock });
-    console.log(formData);
   };
 
   const handleStockChange = (value, index) => {
     //재고 수량 변환하기
     const newStock = [...formData.stock];
-    newStock[index] = { ...newStock[index], quantity: value };
+    newStock[index] = { ...newStock[index], quantity: Number(value) };
     // setStock(newStock);
     setFormData({ ...formData, stock: newStock });
   };
