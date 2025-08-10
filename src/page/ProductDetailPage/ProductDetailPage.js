@@ -19,11 +19,19 @@ const ProductDetail = () => {
 
   const addItemToCart = () => {
     //사이즈를 아직 선택안했다면 에러
+    if (!size) {
+      setSizeError(true);
+      return;
+    }
     // 아직 로그인을 안한유저라면 로그인페이지로
+    if (!user) navigate("/login");
     // 카트에 아이템 추가하기
+    dispatch(addToCart({ id, size }));
   };
   const selectSize = (value) => {
     // 사이즈 추가하기
+    if (sizeError) setSizeError(false);
+    setSize(value);
   };
 
   useEffect(() => {
@@ -42,7 +50,6 @@ const ProductDetail = () => {
         colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
       />
     );
-  console.log(size);
   return (
     <Container className="product-detail-card">
       <Row>
@@ -75,12 +82,12 @@ const ProductDetail = () => {
               {selectedProduct.stock.length > 0 &&
                 selectedProduct.stock.map((item) =>
                   item.quantity > 0 ? (
-                    <Dropdown.Item eventKey={item.id} key={item.id}>
+                    <Dropdown.Item eventKey={item.size} key={item.id}>
                       {item.size.toUpperCase()}
                     </Dropdown.Item>
                   ) : (
                     <Dropdown.Item
-                      eventKey={item.id}
+                      eventKey={item.size}
                       disabled={true}
                       key={item.id}
                     >
