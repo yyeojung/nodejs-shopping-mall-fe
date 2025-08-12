@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Badge } from "react-bootstrap";
 import { badgeBg } from "../../../constants/order.constants";
-import { currencyFormat } from "../../../utils/number";
 
 const OrderStatusCard = ({ orderItem }) => {
   return (
@@ -16,6 +15,7 @@ const OrderStatusCard = ({ orderItem }) => {
         </Col>
         <Col xs={8} className="order-info">
           <div>
+            {" "}
             <strong>주문번호: {orderItem.orderNum}</strong>
           </div>
 
