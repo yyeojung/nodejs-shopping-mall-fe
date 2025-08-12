@@ -82,13 +82,13 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createOrder.pending, (state, action) => {
+      .addCase(createOrder.pending, (state) => {
         state.loading = true;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.selectedOrder = action.payload;
+        state.orderNum = action.payload;
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
