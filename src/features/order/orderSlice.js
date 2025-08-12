@@ -57,7 +57,18 @@ export const getOrderList = createAsyncThunk(
 
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
-  async ({ id, status }, { dispatch, rejectWithValue }) => {}
+  async ({ id, status }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put(`/order/${id}`, { status });
+      if (response.status !== 200) throw new Error(response.error);
+
+      console.log(response);
+      dispatch(getOrderList());
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 // Order slice
@@ -107,6 +118,16 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(updateOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrder.fulfilled, (state) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(updateOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
