@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import ReactPaginate from "react-paginate";
 import { ColorRing } from "react-loader-spinner";
+import RecentProducts from "./components/RecentProducts";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const LandingPage = () => {
     setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
   return (
-    <Container>
+    <Container className="position-relative">
       <Row>
         {productList.length > 0 ? (
           productList.map((item) => (
@@ -79,6 +80,7 @@ const LandingPage = () => {
             )}
           </div>
         )}
+        <RecentProducts productList={productList} />
         <ReactPaginate
           nextLabel="next >"
           onPageChange={handlePageClick}
