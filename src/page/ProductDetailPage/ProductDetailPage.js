@@ -37,6 +37,16 @@ const ProductDetail = () => {
     dispatch(getProductDetail(id));
   }, [id, dispatch]);
 
+  useEffect(() => {
+    if (!id) return;
+    const viewed = JSON.parse(localStorage.getItem("recentProducts") || "[]");
+    const newViewed = [id, ...viewed.filter((item) => item !== id)];
+    localStorage.setItem(
+      "recentProducts",
+      JSON.stringify(newViewed.slice(0, 3))
+    );
+  }, [id]);
+
   if (loading || !selectedProduct)
     return (
       <ColorRing
